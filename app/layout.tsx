@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "Nova Eats — Food delivery. Without the full price.",
   description:
     "Automated food ordering with massive savings, live tracking, and 24/7 access — all through Discord.",
+  icons: {
+    icon: "/nova-logo.png",
+    apple: "/nova-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
