@@ -6,31 +6,35 @@ import { Reveal } from "./Reveal";
 const items = [
   {
     q: "What is Nova Eats?",
-    a: "Nova Eats is an automated ordering service that helps you save on supported food delivery and pickup platforms.",
+    a: "Nova Eats is an independent food-ordering service. You build the cart like normal, share it with us, and we place the order with better pricing. Same restaurants, same delivery — you just pay less.",
+  },
+  {
+    q: "How do you save me money?",
+    a: "We apply available savings at checkout so your total comes in under the regular price — often up to 50% off. Exact savings depend on the restaurant, platform, fees, and order size.",
+  },
+  {
+    q: "How quickly will my food arrive?",
+    a: "We place the order shortly after you confirm and send a tracking link right away. Delivery takes the same amount of time as if you ordered yourself.",
+  },
+  {
+    q: "What if something is wrong with my order?",
+    a: "Use the tracking link to reach the restaurant or driver, the same as a normal order. We’re also in Discord if you need help sorting it out.",
   },
   {
     q: "How do I order?",
-    a: "Join Discord, follow the instructions, submit your cart, and Nova handles checkout.",
+    a: "Join Discord, build your cart like normal (don’t checkout), paste the link or code, and confirm. Nova handles the rest.",
   },
   {
-    q: "Which platforms are supported?",
-    a: "Wonder, DD, Chipotle, and more as they become available.",
+    q: "What can I order?",
+    a: "The same restaurants you already use. Build the cart as usual and send it over.",
   },
   {
-    q: "How much can I save?",
-    a: "It depends on the platform, restaurant, location, taxes, fees, and order value.",
-  },
-  {
-    q: "Do I get tracking?",
-    a: "Yes. Supported orders include tracking after checkout.",
-  },
-  {
-    q: "Is Nova available 24/7?",
-    a: "The bot is built to stay up around the clock. Occasional downtime can still happen.",
+    q: "Is there a membership?",
+    a: "No. No membership and no hidden fees. You pay for the order.",
   },
   {
     q: "How do I get support?",
-    a: "Open a support ticket in the Nova Discord.",
+    a: "Open a ticket in the Nova Discord. Real people — not a runaround.",
   },
 ];
 
@@ -41,10 +45,13 @@ export function FAQ() {
     <section id="faq" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
       <div className="relative mx-auto max-w-3xl">
         <Reveal>
-          <p className="text-[12px] tracking-[0.18em] text-gold">FAQ</p>
+          <p className="text-[12px] tracking-[0.18em] text-gold">FREQUENTLY ASKED</p>
           <h2 className="mt-4 text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[64px]">
-            Questions, answered.
+            Got questions?
           </h2>
+          <p className="mt-5 text-[16px] leading-relaxed text-mute">
+            Everything you need to know about saving with Nova.
+          </p>
         </Reveal>
         <div className="mt-12 overflow-hidden rounded-3xl border border-white/8 bg-card">
           {items.map((item, i) => {

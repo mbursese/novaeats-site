@@ -46,7 +46,7 @@ export function Navbar() {
             href={DISCORD}
             className="hidden rounded-full border border-gold/70 px-4 py-2 text-[13px] font-medium text-ink transition hover:border-gold hover:bg-gold/8 md:inline-flex"
           >
-            Join Discord
+            Order
           </a>
           <button
             type="button"
@@ -76,7 +76,7 @@ export function Navbar() {
               href={DISCORD}
               className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-ink text-sm font-medium text-bg"
             >
-              Join Discord
+              Order
             </a>
           </div>
         </div>

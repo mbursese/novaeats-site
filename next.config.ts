@@ -6,6 +6,17 @@ const tracker = (
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
+  async headers() {
+    return [
+      {
+        source: "/grab/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Cache-Control", value: "no-store" },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       { source: "/track/:path*", destination: `${tracker}/track/:path*` },

@@ -15,7 +15,7 @@ export function Footer() {
             How It Works
           </a>
           <a href="#why" className="hover:text-ink">
-            Why Nova
+            Savings
           </a>
           <a href="#faq" className="hover:text-ink">
             FAQ
@@ -28,10 +28,11 @@ export function Footer() {
           </Link>
         </nav>
       </div>
-      <p className="mx-auto mt-10 max-w-6xl text-[12px] leading-relaxed text-mute/75">
-        Nova Eats is an independent service and is not affiliated with or
-        endorsed by Wonder, DoorDash, Chipotle, or their respective parent
-        companies.
+      <p className="mx-auto mt-10 max-w-6xl text-[13px] text-mute">
+        Eat well. Spend less. Nova helps you save on meals and food delivery.
+      </p>
+      <p className="mx-auto mt-4 max-w-6xl text-[12px] leading-relaxed text-mute/75">
+        Nova Eats is an independent service. Savings vary by restaurant and order.
       </p>
       <p className="mx-auto mt-3 max-w-6xl text-[12px] text-mute">
         © 2026 Nova Eats. All rights reserved.

@@ -4,28 +4,28 @@ import { Reveal } from "./Reveal";
 
 const features = [
   {
-    title: "Automated checkout",
-    body: "Submit the cart and walk away. Nova places it — no waiting on staff.",
+    title: "Restaurants you already love",
+    body: "The places you already order from. Same menus — just a better total at checkout.",
   },
   {
-    title: "Always on",
-    body: "Order at 2pm or 2am. The bot stays up when you’re hungry.",
+    title: "No membership or hidden fees",
+    body: "Pay for the order. That’s it. No subscription to unlock the savings.",
+  },
+  {
+    title: "Same delivery, lower total",
+    body: "We place it under your name. Food arrives on the same timeline as ordering yourself.",
   },
   {
     title: "Live tracking",
-    body: "A clean tracker from kitchen to door. Same food, same driver, lower total.",
+    body: "As soon as it places, you get a tracking link — kitchen to door.",
   },
   {
-    title: "Real savings",
-    body: "Most orders come off a lot lighter than the normal checkout screen.",
+    title: "Real human support",
+    body: "A missing item, a bad address, a question? People in Discord, not a chatbot maze.",
   },
   {
-    title: "Wonder, DD, Chipotle",
-    body: "The apps you already use. More platforms as they come online.",
-  },
-  {
-    title: "People on support",
-    body: "A missing item or a bad address? Open a ticket in Discord.",
+    title: "Order when you’re hungry",
+    body: "Late lunch or late night. Nova stays up so you don’t have to wait on staff.",
   },
 ];
 
@@ -34,9 +34,9 @@ export function Features() {
     <section id="why" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <p className="text-[12px] tracking-[0.18em] text-gold">WHY NOVA</p>
-          <h2 className="mt-4 max-w-[12ch] text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[68px]">
-            Built to make ordering easier.
+          <p className="text-[12px] tracking-[0.18em] text-gold">WHY PEOPLE SWITCH</p>
+          <h2 className="mt-4 max-w-[16ch] text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[68px]">
+            Same food. Better prices.
           </h2>
         </Reveal>
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
