@@ -18,7 +18,7 @@ export function Hero() {
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
       <div className="mx-auto grid max-w-6xl items-center gap-16 px-5 md:px-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-20">
         <div>
-          <p className="mb-6 text-[11px] font-medium tracking-[0.24em] text-mute">
+          <p className="mb-6 text-[11px] font-medium tracking-[0.24em] text-gold">
             AUTOMATED FOOD SAVINGS · 24/7
           </p>
           <h1 className="max-w-[13ch] text-[52px] font-semibold leading-[0.9] tracking-[-0.055em] md:text-[80px]">
@@ -27,7 +27,7 @@ export function Hero() {
             Without the full price.
           </h1>
           <p className="mt-7 max-w-[38ch] text-[16px] leading-[1.6] text-mute md:text-[18px]">
-            Order from Wonder, DoorDash, Chipotle and more. Nova handles checkout
+            Order from Wonder, DD, Chipotle and more. Nova handles checkout
             and cuts the total — then sends you live tracking.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -39,7 +39,7 @@ export function Hero() {
             </a>
             <a
               href="#how"
-              className="inline-flex h-12 items-center rounded-full border border-white/14 px-6 text-[14px] font-medium text-ink transition hover:border-white/30 hover:bg-white/5"
+              className="inline-flex h-12 items-center rounded-full border border-gold/70 px-6 text-[14px] font-medium text-ink transition hover:border-gold hover:bg-gold/8"
             >
               See How It Works
             </a>
@@ -61,11 +61,10 @@ export function Hero() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="relative"
         >
-          <div className="absolute -inset-10 rounded-[40px] bg-purple/20 blur-3xl" />
-          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#11111d]/92 p-7 shadow-[0_40px_100px_rgba(0,0,0,.55)]">
+          <div className="relative overflow-hidden rounded-[28px] border border-gold bg-[#11111d]/92 p-7 shadow-[0_40px_100px_rgba(0,0,0,.55)]">
             <div className="mb-6 flex items-center justify-between">
               <span className="text-[12px] text-mute">Nova checkout</span>
-              <span className="rounded-full bg-purple/18 px-2.5 py-1 text-[11px] font-medium text-[#d8c4ff]">
+              <span className="rounded-full bg-gold/15 px-2.5 py-1 text-[11px] font-medium text-gold">
                 77% OFF
               </span>
             </div>
@@ -108,7 +107,7 @@ function Row({
   return (
     <div className="flex items-center justify-between">
       <span className="text-mute">{label}</span>
-      <span className={accent ? "text-[#c4b5fd]" : "text-ink"}>{value}</span>
+      <span className={accent ? "text-gold" : "text-ink"}>{value}</span>
     </div>
   );
 }

@@ -44,7 +44,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <a
             href={DISCORD}
-            className="hidden rounded-full border border-white/16 px-4 py-2 text-[13px] font-medium text-ink transition hover:border-white/30 hover:bg-white/5 md:inline-flex"
+            className="hidden rounded-full border border-gold/70 px-4 py-2 text-[13px] font-medium text-ink transition hover:border-gold hover:bg-gold/8 md:inline-flex"
           >
             Join Discord
           </a>

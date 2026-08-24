@@ -20,7 +20,7 @@ const features = [
     body: "Most orders come off a lot lighter than the normal checkout screen.",
   },
   {
-    title: "Wonder, DoorDash, Chipotle",
+    title: "Wonder, DD, Chipotle",
     body: "The apps you already use. More platforms as they come online.",
   },
   {
@@ -34,7 +34,7 @@ export function Features() {
     <section id="why" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <p className="text-[12px] tracking-[0.18em] text-mute">WHY NOVA</p>
+          <p className="text-[12px] tracking-[0.18em] text-gold">WHY NOVA</p>
           <h2 className="mt-4 max-w-[12ch] text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[68px]">
             Built to make ordering easier.
           </h2>
@@ -42,7 +42,7 @@ export function Features() {
         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.05}>
-              <article className="h-full rounded-2xl border border-white/8 bg-card px-6 py-7 transition duration-300 hover:-translate-y-1 hover:border-purple/25 hover:shadow-[0_0_48px_rgba(139,92,246,.1)]">
+              <article className="h-full rounded-2xl border border-white/8 bg-card px-6 py-7 transition duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_0_40px_rgba(248,192,0,.08)]">
                 <h3 className="text-[20px] font-semibold tracking-tight">{f.title}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-mute">{f.body}</p>
               </article>

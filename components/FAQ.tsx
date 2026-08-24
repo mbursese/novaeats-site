@@ -14,7 +14,7 @@ const items = [
   },
   {
     q: "Which platforms are supported?",
-    a: "Wonder, DoorDash, Chipotle, and more as they become available.",
+    a: "Wonder, DD, Chipotle, and more as they become available.",
   },
   {
     q: "How much can I save?",
@@ -41,7 +41,7 @@ export function FAQ() {
     <section id="faq" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
       <div className="relative mx-auto max-w-3xl">
         <Reveal>
-          <p className="text-[12px] tracking-[0.18em] text-mute">FAQ</p>
+          <p className="text-[12px] tracking-[0.18em] text-gold">FAQ</p>
           <h2 className="mt-4 text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[64px]">
             Questions, answered.
           </h2>
@@ -60,7 +60,9 @@ export function FAQ() {
                   <span className="text-[16px] font-medium tracking-tight md:text-[17px]">
                     {item.q}
                   </span>
-                  <span className="text-[18px] text-mute">{active ? "–" : "+"}</span>
+                  <span className={`text-[18px] ${active ? "text-gold" : "text-mute"}`}>
+                    {active ? "–" : "+"}
+                  </span>
                 </button>
                 <div
                   className={`grid transition-[grid-template-rows] duration-300 ${

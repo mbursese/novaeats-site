@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
         <Logo />
         <nav className="flex flex-wrap gap-x-6 gap-y-3 text-[13px] text-mute">
-          <a href={DISCORD} className="hover:text-ink">
+          <a href={DISCORD} className="hover:text-gold">
             Discord
           </a>
           <a href="#how" className="hover:text-ink">

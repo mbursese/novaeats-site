@@ -6,7 +6,7 @@ const steps = [
   {
     n: "01",
     title: "Build your order",
-    body: "Make the cart on Wonder, DoorDash, or Chipotle — the same way you already order.",
+    body: "Make the cart on Wonder, DD, or Chipotle — the same way you already order.",
   },
   {
     n: "02",
@@ -25,7 +25,7 @@ export function HowItWorks() {
     <section id="how" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <p className="text-[12px] tracking-[0.18em] text-mute">HOW IT WORKS</p>
+          <p className="text-[12px] tracking-[0.18em] text-gold">HOW IT WORKS</p>
           <h2 className="mt-4 max-w-[11ch] text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[68px]">
             Three steps. That’s it.
           </h2>
@@ -37,7 +37,7 @@ export function HowItWorks() {
           {steps.map((step, i) => (
             <Reveal key={step.n} delay={i * 0.08}>
               <article className="h-full bg-card px-7 py-9 md:min-h-[320px] md:px-8">
-                <p className="font-mono text-[13px] text-purple-bright">{step.n}</p>
+                <p className="font-mono text-[13px] text-gold">{step.n}</p>
                 <h3 className="mt-16 text-[26px] font-semibold tracking-tight">{step.title}</h3>
                 <p className="mt-3 max-w-[28ch] text-[15px] leading-relaxed text-mute">{step.body}</p>
               </article>
