@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/track",
+      "destination": "https://tracker.novaeats.co/api/track"
+    },
+    {
+      "source": "/api/track/:path*",
+      "destination": "https://tracker.novaeats.co/api/track/:path*"
+    },
+    {
+      "source": "/track/:path*",
+      "destination": "https://tracker.novaeats.co/track/:path*"
+    },
+    {
+      "source": "/static/:path*",
+      "destination": "https://tracker.novaeats.co/static/:path*"
+    }
+  ]
+}
