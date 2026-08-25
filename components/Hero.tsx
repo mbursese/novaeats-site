@@ -22,7 +22,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
+    <section className="relative pt-32 pb-12 md:pt-40 md:pb-16">
       <div className="mx-auto grid max-w-6xl items-center gap-16 px-5 md:px-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-20">
         <div>
           <p className="mb-6 text-[11px] font-medium tracking-[0.24em] text-gold">

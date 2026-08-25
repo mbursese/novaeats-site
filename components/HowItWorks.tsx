@@ -22,7 +22,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-24 border-t border-white/8 px-5 py-24 md:px-8 md:py-32">
+    <section id="how" className="scroll-mt-24 px-5 py-14 md:px-8 md:py-20">
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <p className="text-[12px] tracking-[0.18em] text-gold">HOW IT WORKS</p>
