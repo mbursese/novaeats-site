@@ -166,10 +166,10 @@ window.__novaGrabber = {
       /couldn't read/.test(lower) ||
       /hmac|menu-item/.test(lower)
     ) {
-      return "We couldn't read your cart. Sign in on wonder.com with your cart open, then tap the bookmark again.";
+      return "We couldn't read your cart. Open your filled cart, then tap the bookmark again.";
     }
     if (!text || /ajax|hmac|404|500/.test(lower)) {
-      return "We couldn't read your cart. Sign in on wonder.com with your cart open, then tap the bookmark again.";
+      return "We couldn't read your cart. Open your filled cart, then tap the bookmark again.";
     }
     return text;
   }
