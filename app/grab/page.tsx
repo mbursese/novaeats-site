@@ -21,16 +21,19 @@ export default function GrabPage() {
         still save to the same cart servers the bot already uses.
       </p>
       <ol className="mt-6 list-decimal space-y-2 pl-5 text-[15px] leading-relaxed text-mute">
-        <li>Show the bookmarks bar in your browser.</li>
-        <li>Drag the gold button onto that bar.</li>
-        <li>Open a filled cart on wonder.com, then click the bookmark.</li>
+        <li>Show the bookmarks bar (Chrome: Cmd+Shift+B).</li>
+        <li>
+          Drag the gold button onto that bar — clicking it on this page does
+          nothing. If drag fails, copy the bookmark, add a new bookmark, and
+          paste it as the URL.
+        </li>
+        <li>Open a filled cart on wonder.com, then click the bookmark there.</li>
         <li>Paste the code into Discord.</li>
       </ol>
       <GrabBookmarks />
       <p className="mt-10 text-[13px] leading-relaxed text-mute/80">
-        If the bookmark does nothing, wonder.com may be blocking scripts from
-        novaeats.co. Say so and we can switch to an inline bookmark that does
-        not load a remote file.
+        Replace any older bookmark that pointed at /grab/v2.js or /grab/wonder.js.
+        Those load a remote file, and wonder.com blocks it.
       </p>
       <Link href="/" className="mt-10 inline-block text-sm text-ink underline">
         Back home

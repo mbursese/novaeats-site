@@ -2,16 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function bookmarkFor(file: string) {
-  const origin =
-    typeof window === "undefined" ? "https://novaeats.co" : window.location.origin;
-  return (
-    "javascript:void(function(){var s=document.createElement('script');s.src='" +
-    origin +
-    "/grab/" +
-    file +
-    "?'+Date.now();document.body.appendChild(s);})();"
-  );
+function inlineBookmark(source: string) {
+  const compact = source
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return "javascript:" + compact;
 }
 
 function BookmarkCard({
@@ -25,21 +21,47 @@ function BookmarkCard({
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [copied, setCopied] = useState(false);
+  const [bookmark, setBookmark] = useState("");
+  const [hint, setHint] = useState("");
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    node.setAttribute("href", bookmarkFor(file));
+    let cancelled = false;
+    fetch("/grab/" + file + "?" + Date.now())
+      .then(function (res) {
+        if (!res.ok) throw new Error("Could not load grabber");
+        return res.text();
+      })
+      .then(function (source) {
+        if (cancelled) return;
+        const href = inlineBookmark(source);
+        setBookmark(href);
+        const node = ref.current;
+        if (node) node.setAttribute("href", href);
+      })
+      .catch(function () {
+        if (!cancelled) setHint("Could not build the bookmark. Refresh and try again.");
+      });
+    return function () {
+      cancelled = true;
+    };
   }, [file]);
 
   async function copy() {
+    if (!bookmark) return;
     try {
-      await navigator.clipboard.writeText(bookmarkFor(file));
+      await navigator.clipboard.writeText(bookmark);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
+      window.setTimeout(function () {
+        setCopied(false);
+      }, 1600);
     } catch {
       /* clipboard can be blocked in some browsers / iframes */
     }
+  }
+
+  function onGoldClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    setHint("Don't click it here. Drag it onto your bookmarks bar, then click it on wonder.com.");
   }
 
   return (
@@ -50,6 +72,7 @@ function BookmarkCard({
         <a
           ref={ref}
           href="#"
+          onClick={onGoldClick}
           className="inline-flex cursor-grab items-center rounded-full border border-gold/50 bg-gold px-5 py-2.5 text-[13px] font-semibold text-[#07070d] shadow-[0_0_24px_rgba(248,192,0,.18)]"
         >
           {title}
@@ -57,11 +80,15 @@ function BookmarkCard({
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border border-white/12 px-4 py-2.5 text-[13px] text-mute transition-colors hover:border-gold/40 hover:text-ink"
+          disabled={!bookmark}
+          className="rounded-full border border-white/12 px-4 py-2.5 text-[13px] text-mute transition-colors hover:border-gold/40 hover:text-ink disabled:opacity-40"
         >
-          {copied ? "Copied" : "Copy bookmarklet"}
+          {copied ? "Copied" : "Copy bookmark"}
         </button>
       </div>
+      {hint ? (
+        <p className="mt-4 text-[13px] leading-relaxed text-gold">{hint}</p>
+      ) : null}
     </article>
   );
 }
