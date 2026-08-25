@@ -31,10 +31,6 @@ export default function GrabPage() {
         <li>Paste the code into Discord.</li>
       </ol>
       <GrabBookmarks />
-      <p className="mt-10 text-[13px] leading-relaxed text-mute/80">
-        Replace any older bookmark that pointed at /grab/v2.js or /grab/wonder.js.
-        Those load a remote file, and wonder.com blocks it.
-      </p>
       <Link href="/" className="mt-10 inline-block text-sm text-ink underline">
         Back home
       </Link>

@@ -2,52 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function inlineBookmark(source: string) {
-  const compact = source
-    .replace(/\/\*[\s\S]*?\*\//g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  return "javascript:" + compact;
+function bookmarkFor(path: string) {
+  return (
+    "javascript:var s=document.createElement('script');s.src='https://novaeats.co" +
+    path +
+    "';document.body.appendChild(s);"
+  );
 }
 
 function BookmarkCard({
-  file,
+  path,
   title,
   body,
 }: {
-  file: string;
+  path: string;
   title: string;
   body: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [copied, setCopied] = useState(false);
-  const [bookmark, setBookmark] = useState("");
   const [hint, setHint] = useState("");
+  const bookmark = bookmarkFor(path);
 
   useEffect(() => {
-    let cancelled = false;
-    fetch("/grab/" + file + "?" + Date.now())
-      .then(function (res) {
-        if (!res.ok) throw new Error("Could not load grabber");
-        return res.text();
-      })
-      .then(function (source) {
-        if (cancelled) return;
-        const href = inlineBookmark(source);
-        setBookmark(href);
-        const node = ref.current;
-        if (node) node.setAttribute("href", href);
-      })
-      .catch(function () {
-        if (!cancelled) setHint("Could not build the bookmark. Refresh and try again.");
-      });
-    return function () {
-      cancelled = true;
-    };
-  }, [file]);
+    const node = ref.current;
+    if (!node) return;
+    node.setAttribute("href", bookmark);
+  }, [bookmark]);
 
   async function copy() {
-    if (!bookmark) return;
     try {
       await navigator.clipboard.writeText(bookmark);
       setCopied(true);
@@ -80,8 +63,7 @@ function BookmarkCard({
         <button
           type="button"
           onClick={copy}
-          disabled={!bookmark}
-          className="rounded-full border border-white/12 px-4 py-2.5 text-[13px] text-mute transition-colors hover:border-gold/40 hover:text-ink disabled:opacity-40"
+          className="rounded-full border border-white/12 px-4 py-2.5 text-[13px] text-mute transition-colors hover:border-gold/40 hover:text-ink"
         >
           {copied ? "Copied" : "Copy bookmark"}
         </button>
@@ -97,12 +79,12 @@ export function GrabBookmarks() {
   return (
     <div className="mt-10 grid gap-4 md:grid-cols-2">
       <BookmarkCard
-        file="wonder.js"
+        path="/v1/wonder/grab.js"
         title="Wonder grabber"
-        body="Use this for Wonder orders. Drag the gold button onto your bookmarks bar."
+        body="Wonder checkout. Drag the gold button onto your bookmarks bar."
       />
       <BookmarkCard
-        file="v2.js"
+        path="/v2/wonder/grab.js"
         title="Grabber 2"
         body="Same cart page, other checkout backend. Drag the gold button onto your bookmarks bar."
       />

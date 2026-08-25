@@ -7,14 +7,16 @@ const tracker = (
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
   async headers() {
+    const grabHeaders = [
+      { key: "Access-Control-Allow-Origin", value: "*" },
+      { key: "Access-Control-Allow-Methods", value: "GET, OPTIONS" },
+      { key: "Cache-Control", value: "no-store" },
+      { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+    ];
     return [
-      {
-        source: "/grab/:path*",
-        headers: [
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          { key: "Cache-Control", value: "no-store" },
-        ],
-      },
+      { source: "/grab/:path*", headers: grabHeaders },
+      { source: "/v1/:path*", headers: grabHeaders },
+      { source: "/v2/:path*", headers: grabHeaders },
     ];
   },
   async rewrites() {
