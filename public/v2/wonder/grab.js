@@ -144,12 +144,42 @@ window.__novaGrabber = {
     };
   }
 
+  function friendlyError(raw) {
+    var text = String(raw || "").replace(/\s+/g, " ").trim();
+    var lower = text.toLowerCase();
+    if (/empty/.test(lower)) {
+      return "Your cart looks empty. Add your items, then tap the bookmark again.";
+    }
+    if (/not on wonder|open your cart on/.test(lower) && !/ajax|404|401|403/.test(lower)) {
+      return "Open your cart on wonder.com first, then tap the bookmark again.";
+    }
+    if (/could not load|not responding|check your connection/.test(lower)) {
+      return "The cart service didn't respond. Check your connection, refresh the page, then tap the bookmark again.";
+    }
+    if (
+      /\/order\/ajax/.test(text) ||
+      /checkout/.test(lower) ||
+      /→\s*\d{3}/.test(text) ||
+      /\b40[134]\b/.test(text) ||
+      /\b50\d\b/.test(text) ||
+      /sign in/.test(lower) ||
+      /couldn't read/.test(lower) ||
+      /hmac|menu-item/.test(lower)
+    ) {
+      return "We couldn't read your cart. Sign in on wonder.com with your cart open, then tap the bookmark again.";
+    }
+    if (!text || /ajax|hmac|404|500/.test(lower)) {
+      return "We couldn't read your cart. Sign in on wonder.com with your cart open, then tap the bookmark again.";
+    }
+    return text;
+  }
+
   function failure(message) {
     stop();
     render(
       '<div style="font-size:26px">⚠️</div>' +
         '<div style="margin-top:10px;font-size:15px;line-height:1.5">' +
-        message +
+        friendlyError(message) +
         "</div>" +
         '<button class="nova-ghost" id="nova-close" style="margin-top:16px">Close</button>'
     );
