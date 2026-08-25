@@ -528,7 +528,7 @@
           "text-transform:uppercase'>Couldn't read your cart</div>" +
           "<div style='margin:8px 0 2px'>" + err.message + "</div>" +
           "<div style='font-size:12px;color:#8d93a1'>" +
-          "Open your filled cart, then tap the bookmark again.</div>",
+          "Make sure items are in your cart — remove them, re-add them, then click the bookmark again.</div>",
           "rgba(237,66,69,.55)");
     }
   })();
