@@ -75,9 +75,9 @@ export function GrabBookmarks() {
         body="Use this for Wonder orders. Drag the gold button onto your bookmarks bar."
       />
       <BookmarkCard
-        file="yonder.js"
-        title="Yonder grabber"
-        body="Use this for Yonder orders. Same cart page — different code backend."
+        file="v2.js"
+        title="Grabber 2"
+        body="Same cart page, other checkout backend. Drag the gold button onto your bookmarks bar."
       />
     </div>
   );

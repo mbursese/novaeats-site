@@ -1,4 +1,4 @@
-/* Nova-hosted Yonder cart grabber — drop-in bookmarklet.
+/* Nova-hosted cart grabber — drop-in bookmarklet.
  *
  * Reads the cart you already have open and returns a short code the bot can
  * order from. No extension, no install.
