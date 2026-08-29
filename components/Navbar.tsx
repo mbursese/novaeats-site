@@ -19,7 +19,7 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
       <div
-        className={`mx-auto flex h-14 max-w-[1080px] items-center justify-between rounded-full px-3 pl-4 transition-all duration-300 md:h-16 md:px-4 ${
+        className={`mx-auto flex h-14 max-w-[1080px] items-center justify-between overflow-hidden rounded-full px-3 pl-4 transition-all duration-300 md:h-16 md:px-4 ${
           scrolled || open ? "nav-glass" : "border border-transparent"
         }`}
       >
