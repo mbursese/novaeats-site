@@ -61,6 +61,14 @@ body {
   -webkit-backdrop-filter: blur(28px);
 }
 
+.nav-glass {
+  background: rgb(10 10 16 / 0.88);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.4);
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

@@ -20,9 +20,7 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
       <div
         className={`mx-auto flex h-14 max-w-[1080px] items-center justify-between rounded-full px-3 pl-4 transition-all duration-300 md:h-16 md:px-4 ${
-          scrolled || open
-            ? "glass shadow-[0_20px_50px_rgba(0,0,0,.35)]"
-            : "border border-transparent"
+          scrolled || open ? "nav-glass" : "border border-transparent"
         }`}
       >
         <a href="#top" className="relative z-10" onClick={() => setOpen(false)}>
@@ -57,7 +55,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="glass mx-auto mt-2 max-w-[1080px] rounded-3xl px-5 py-5 md:hidden">
+        <div className="nav-glass mx-auto mt-2 max-w-[1080px] rounded-3xl px-5 py-5 md:hidden">
           <div className="flex flex-col gap-4 text-sm">
             {nav.map((item) => (
               <a
