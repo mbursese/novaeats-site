@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nova Eats — Save big on every delivery",
+  title: "Nova Eats — Eat well. Spend less.",
   description:
-    "Get up to 50% off food delivery. Same restaurants, better prices. Share your cart, we place the order, and you get live tracking.",
+    "Get up to 50% off food delivery. Same restaurants, better prices.",
   icons: {
     icon: "/nova-logo.png",
     apple: "/nova-logo.png",

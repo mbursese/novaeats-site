@@ -10,7 +10,7 @@ const items = [
   },
   {
     q: "How do you save me money?",
-    a: "We apply available savings at checkout so your total comes in under the regular price — often up to 50% off. Exact savings depend on the restaurant, platform, fees, and order size.",
+    a: "We apply available savings at checkout so your total comes in under the regular price — often up to 50% off. Exact savings depend on the restaurant, fees, and order size.",
   },
   {
     q: "How quickly will my food arrive?",
@@ -25,16 +25,8 @@ const items = [
     a: "Join Discord, build your cart like normal (don’t checkout), paste the link or code, and confirm. Nova handles the rest.",
   },
   {
-    q: "What can I order?",
-    a: "The same restaurants you already use. Build the cart as usual and send it over.",
-  },
-  {
     q: "Is there a membership?",
     a: "No. No membership and no hidden fees. You pay for the order.",
-  },
-  {
-    q: "How do I get support?",
-    a: "Open a ticket in the Nova Discord. Real people — not a runaround.",
   },
 ];
 
@@ -42,32 +34,32 @@ export function FAQ() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section id="faq" className="scroll-mt-24 px-5 py-14 md:px-8 md:py-20">
-      <div className="relative mx-auto max-w-3xl">
+    <section id="faq" className="scroll-mt-28 px-5 py-16 md:px-8 md:py-24">
+      <div className="mx-auto max-w-[720px]">
         <Reveal>
           <p className="text-[12px] tracking-[0.18em] text-gold">FREQUENTLY ASKED</p>
-          <h2 className="mt-4 text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[64px]">
+          <h2 className="mt-4 text-[40px] font-semibold leading-[0.95] tracking-[-0.05em] md:text-[56px]">
             Got questions?
           </h2>
           <p className="mt-5 text-[16px] leading-relaxed text-mute">
             Everything you need to know about saving with Nova.
           </p>
         </Reveal>
-        <div className="mt-12 overflow-hidden rounded-3xl border border-white/8 bg-card">
+        <div className="mt-10">
           {items.map((item, i) => {
             const active = open === i;
             return (
-              <div key={item.q} className={i ? "border-t border-white/8" : ""}>
+              <div key={item.q} className="border-t border-white/8 last:border-b">
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left transition hover:bg-white/[0.02] md:px-7"
+                  className="flex w-full items-center justify-between gap-6 py-5 text-left"
                   onClick={() => setOpen(active ? -1 : i)}
                   aria-expanded={active}
                 >
                   <span className="text-[16px] font-medium tracking-tight md:text-[17px]">
                     {item.q}
                   </span>
-                  <span className={`text-[18px] ${active ? "text-gold" : "text-mute"}`}>
+                  <span className={`text-[20px] ${active ? "text-ink" : "text-mute"}`}>
                     {active ? "–" : "+"}
                   </span>
                 </button>
@@ -77,9 +69,7 @@ export function FAQ() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-6 pb-5 text-[15px] leading-relaxed text-mute md:px-7">
-                      {item.a}
-                    </p>
+                    <p className="pb-5 text-[15px] leading-relaxed text-mute">{item.a}</p>
                   </div>
                 </div>
               </div>

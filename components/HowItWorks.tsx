@@ -22,11 +22,11 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-24 px-5 py-14 md:px-8 md:py-20">
-      <div className="relative mx-auto max-w-6xl">
+    <section id="how" className="scroll-mt-28 px-5 py-16 md:px-8 md:py-24">
+      <div className="mx-auto max-w-[1080px]">
         <Reveal>
           <p className="text-[12px] tracking-[0.18em] text-gold">HOW IT WORKS</p>
-          <h2 className="mt-4 max-w-[14ch] text-[44px] font-semibold leading-[0.92] tracking-[-0.05em] md:text-[68px]">
+          <h2 className="mt-4 max-w-[12ch] text-[40px] font-semibold leading-[0.95] tracking-[-0.05em] md:text-[64px]">
             Build. Share. Save.
           </h2>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-mute">
@@ -34,13 +34,13 @@ export function HowItWorks() {
             with better pricing — often up to 50% off.
           </p>
         </Reveal>
-        <div className="mt-16 grid gap-px overflow-hidden rounded-3xl border border-white/8 bg-white/8 md:grid-cols-3">
+        <div className="mt-14 grid gap-px overflow-hidden rounded-[28px] border border-white/8 bg-white/8 md:grid-cols-3">
           {steps.map((step, i) => (
-            <Reveal key={step.n} delay={i * 0.08}>
-              <article className="h-full bg-card px-7 py-9 md:min-h-[320px] md:px-8">
+            <Reveal key={step.n} delay={i * 0.07}>
+              <article className="flex h-full min-h-[280px] flex-col bg-bg-2 px-7 py-8 md:px-8">
                 <p className="font-mono text-[13px] text-gold">{step.n}</p>
-                <h3 className="mt-16 text-[26px] font-semibold tracking-tight">{step.title}</h3>
-                <p className="mt-3 max-w-[30ch] text-[15px] leading-relaxed text-mute">{step.body}</p>
+                <h3 className="mt-16 text-[24px] font-semibold tracking-tight">{step.title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-mute">{step.body}</p>
               </article>
             </Reveal>
           ))}
