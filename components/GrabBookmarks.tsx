@@ -2,27 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function bookmarkFor(path: string) {
+function bookmarkFor(src: string) {
   return (
-    "javascript:var s=document.createElement('script');s.src='https://novaeats.co" +
-    path +
-    "';document.body.appendChild(s);"
+    "javascript:(function(){var s=document.createElement('script');s.src='" +
+    src +
+    "?v='+Date.now();document.body.appendChild(s);})();"
   );
 }
 
 function BookmarkCard({
-  path,
+  src,
   title,
   body,
 }: {
-  path: string;
+  src: string;
   title: string;
   body: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [copied, setCopied] = useState(false);
   const [hint, setHint] = useState("");
-  const bookmark = bookmarkFor(path);
+  const bookmark = bookmarkFor(src);
 
   useEffect(() => {
     const node = ref.current;
@@ -79,12 +79,12 @@ export function GrabBookmarks() {
   return (
     <div className="mt-10 grid gap-4 md:grid-cols-2">
       <BookmarkCard
-        path="/v1/wonder/grab.js"
+        src="https://cart.wonderfulbot.org/static/grab.js"
         title="Wonder grabber"
-        body="Wonder checkout. Drag the gold button onto your bookmarks bar."
+        body="Wonder checkout. Drag the gold button onto your bookmarks bar, or add it on your phone the same way."
       />
       <BookmarkCard
-        path="/v2/wonder/grab.js"
+        src="https://novaeats.co/v2/wonder/grab.js"
         title="Grabber 2"
         body="Same cart page, other checkout backend. Drag the gold button onto your bookmarks bar."
       />

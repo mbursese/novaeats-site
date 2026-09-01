@@ -1,6 +1,6 @@
 window.__novaGrabber = {
   provider: "wonder",
-  src: "https://wonder-cart-server-production.up.railway.app/static/grab.js",
+  src: "https://cart.wonderfulbot.org/static/grab.js",
 };
 /* Nova cart grabber — branded wrapper around the cart server's grab.js. */
 (function () {
@@ -11,7 +11,7 @@ window.__novaGrabber = {
   var PROVIDER = BOUND.provider === "yonder" ? "yonder" : "wonder";
   var GRAB_SRC =
     BOUND.src ||
-    "https://wonder-cart-server-production.up.railway.app/static/grab.js";
+    "https://cart.wonderfulbot.org/static/grab.js";
   var GOLD = "#f8c000";
   var UPSTREAM_PANEL_ID = "wonder-cart-grabber-panel";
   var UPSTREAM_STYLE_ID = "nova-grabber-upstream-quarantine";
@@ -299,7 +299,7 @@ window.__novaGrabber = {
   }
 
   var script = document.createElement("script");
-  script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?" : "&") + Date.now();
+  script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
   script.onload = function () {
     loaded = true;
   };

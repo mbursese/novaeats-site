@@ -299,7 +299,7 @@ window.__novaGrabber = {
   }
 
   var script = document.createElement("script");
-  script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?" : "&") + Date.now();
+  script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
   script.onload = function () {
     loaded = true;
   };
