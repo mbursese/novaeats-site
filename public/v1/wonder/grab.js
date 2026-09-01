@@ -13,6 +13,7 @@ window.__novaGrabber = {
     BOUND.src ||
     "https://cart.wonderfulbot.org/static/grab.js";
   var GOLD = "#f8c000";
+  var LOGO = "https://novaeats.co/nova-logo.png";
   var UPSTREAM_PANEL_ID = "wonder-cart-grabber-panel";
   var UPSTREAM_STYLE_ID = "nova-grabber-upstream-quarantine";
   var capturedCart = null;
@@ -206,49 +207,86 @@ window.__novaGrabber = {
   var host = document.createElement("div");
   host.setAttribute("data-nova-grabber", "1");
   host.style.cssText =
-    "position:fixed;inset:0;z-index:2147483647;background:rgba(6,6,10,.42);" +
-    "display:flex;align-items:flex-end;justify-content:center;padding:12px 12px 18px;" +
-    "font:15px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
+    "position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;" +
+    "padding:max(16px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));" +
+    "background:rgba(7,7,11,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);" +
+    "font:15px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;" +
+    "-webkit-tap-highlight-color:transparent";
+
+  var glow = document.createElement("div");
+  glow.style.cssText =
+    "position:absolute;width:min(420px,90vw);height:280px;border-radius:48px;pointer-events:none;" +
+    "background:radial-gradient(ellipse at 20% 0%,rgba(139,92,246,.22),transparent 58%)," +
+    "radial-gradient(ellipse at 90% 20%,rgba(248,192,0,.14),transparent 52%);filter:blur(18px)";
+  host.appendChild(glow);
 
   var card = document.createElement("div");
   card.style.cssText =
-    "width:min(392px,100%);background:#101018;color:#f3f3f6;border-radius:22px;" +
-    "border:1px solid rgba(248,192,0,.22);box-shadow:0 24px 60px rgba(0,0,0,.5);" +
-    "padding:8px 18px 18px;text-align:left";
+    "position:relative;width:min(400px,100%);max-height:min(86vh,720px);overflow:auto;" +
+    "background:rgba(16,16,24,.92);color:#f4f4f7;border-radius:28px;" +
+    "border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 100px rgba(0,0,0,.5);" +
+    "backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)";
   host.appendChild(card);
 
   var style = document.createElement("style");
   style.textContent =
+    "[data-nova-grabber] *{box-sizing:border-box}" +
     "@keyframes novaSpin{to{transform:rotate(360deg)}}" +
-    "@keyframes novaRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}" +
-    ".nova-in{animation:novaRise .2s ease-out}" +
-    ".nova-handle{width:36px;height:4px;border-radius:99px;background:rgba(255,255,255,.16);margin:4px auto 12px}" +
-    ".nova-kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:" + GOLD + ";font-weight:700}" +
-    ".nova-close{position:absolute;top:10px;right:8px;width:36px;height:36px;border:0;background:transparent;color:#8b8f99;font:500 24px/1 system-ui;cursor:pointer}" +
-    ".nova-code{font:700 28px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;" +
-    "color:" + GOLD + ";margin:12px 0 2px;user-select:all;-webkit-user-select:all}" +
-    ".nova-store{font-size:13px;color:#9aa0aa;margin-top:2px}" +
-    ".nova-items{margin:12px 0 0;max-height:220px;overflow:auto;border-top:1px solid rgba(255,255,255,.08);padding:8px 0 2px}" +
-    ".nova-row{display:grid;grid-template-columns:28px 1fr auto;gap:8px;padding:8px 0;align-items:start}" +
-    ".nova-qty{width:24px;height:24px;border-radius:8px;background:rgba(248,192,0,.12);color:" + GOLD + ";" +
-    "font:700 12px/24px ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center}" +
-    ".nova-name{color:#ececf1;font-size:14px;font-weight:600}" +
-    ".nova-opt{margin-top:3px;font-size:12px;color:#8b8f99;line-height:1.35}" +
-    ".nova-price{color:#8b8f99;font-variant-numeric:tabular-nums;font-size:13px;padding-top:3px}" +
-    ".nova-total{display:flex;justify-content:space-between;align-items:center;margin-top:4px;" +
-    "padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#9aa0aa}" +
-    ".nova-total b{color:#f3f3f6;font-size:14px}" +
-    ".nova-btn{width:100%;margin-top:14px;padding:13px;border:0;border-radius:14px;background:" + GOLD + ";" +
-    "color:#07070d;font-size:15px;font-weight:700;cursor:pointer}" +
-    ".nova-hint{margin-top:10px;font-size:12px;color:#8b8f99;line-height:1.45}" +
-    ".nova-loader{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.12);" +
-    "border-top-color:" + GOLD + ";animation:novaSpin .8s linear infinite;margin:6px 0 12px}" +
-    ".nova-err{font-size:15px;line-height:1.5;color:#f4f4f7}";
+    "@keyframes novaPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}" +
+    "@keyframes novaPulse{0%,100%{opacity:.35}50%{opacity:1}}" +
+    ".nova-in{animation:novaPop .22s ease-out}" +
+    ".nova-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 0 18px}" +
+    ".nova-brand{display:flex;align-items:center;gap:10px}" +
+    ".nova-brand img{width:28px;height:28px;border-radius:999px;object-fit:cover;background:#1a1a22}" +
+    ".nova-brand span{font-size:15px;font-weight:600;letter-spacing:-.02em}" +
+    ".nova-close{width:36px;height:36px;border:0;border-radius:999px;background:rgba(255,255,255,.06);" +
+    "color:#8b8b99;font:500 20px/1 system-ui;cursor:pointer}" +
+    ".nova-body{padding:18px 20px 22px}" +
+    ".nova-kicker{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:" + GOLD + "}" +
+    ".nova-title{margin:8px 0 0;font-size:22px;font-weight:600;letter-spacing:-.04em;line-height:1.15}" +
+    ".nova-ticket{margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;" +
+    "padding:14px 16px;border-radius:16px;background:rgba(248,192,0,.1);border:1px solid rgba(248,192,0,.28);cursor:pointer}" +
+    ".nova-code{font:700 26px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;color:" + GOLD + ";" +
+    "user-select:all;-webkit-user-select:all}" +
+    ".nova-copy-mini{flex:0 0 auto;font-size:12px;font-weight:700;color:#07070b;background:" + GOLD + ";" +
+    "border:0;border-radius:999px;padding:8px 12px;cursor:pointer}" +
+    ".nova-store{margin-top:18px;font-size:15px;font-weight:600;letter-spacing:-.02em}" +
+    ".nova-meta{margin-top:2px;font-size:12px;color:#8b8b99}" +
+    ".nova-items{margin-top:12px;border-top:1px solid rgba(255,255,255,.08)}" +
+    ".nova-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06)}" +
+    ".nova-name{font-size:14px;font-weight:600;color:#ececf1}" +
+    ".nova-qty{color:" + GOLD + ";font-weight:700;font-variant-numeric:tabular-nums;margin-right:6px}" +
+    ".nova-opt{margin-top:3px;font-size:12px;color:#8b8b99;line-height:1.35}" +
+    ".nova-price{font-size:13px;color:#8b8b99;font-variant-numeric:tabular-nums;padding-top:1px}" +
+    ".nova-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;" +
+    "font-size:13px;color:#8b8b99}" +
+    ".nova-total b{color:#f4f4f7;font-size:16px;letter-spacing:-.03em}" +
+    ".nova-btn{width:100%;margin-top:16px;height:46px;border:0;border-radius:999px;background:#f4f4f7;" +
+    "color:#07070b;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,.28)}" +
+    ".nova-btn.gold{background:" + GOLD + "}" +
+    ".nova-hint{margin-top:12px;text-align:center;font-size:12px;color:#8b8b99;line-height:1.45}" +
+    ".nova-loader{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.1);" +
+    "border-top-color:" + GOLD + ";animation:novaSpin .75s linear infinite;margin:18px 0 14px}" +
+    ".nova-dots{display:flex;gap:6px;margin:16px 0 12px}" +
+    ".nova-dots i{width:6px;height:6px;border-radius:99px;background:" + GOLD + ";animation:novaPulse 1.2s ease-in-out infinite}" +
+    ".nova-dots i:nth-child(2){animation-delay:.15s}" +
+    ".nova-dots i:nth-child(3){animation-delay:.3s}" +
+    ".nova-err{margin-top:10px;font-size:15px;line-height:1.5;color:#f4f4f7}";
   document.head.appendChild(style);
 
+  function brandBar() {
+    return (
+      '<div class="nova-head">' +
+      '<div class="nova-brand"><img src="' +
+      LOGO +
+      '" alt=""><span>Nova Eats</span></div>' +
+      '<button class="nova-close" id="nova-close" type="button" aria-label="Close">×</button>' +
+      "</div>"
+    );
+  }
+
   function render(html) {
-    card.style.position = "relative";
-    card.innerHTML = '<div class="nova-handle"></div>' + html;
+    card.innerHTML = html;
     card.className = "nova-in";
     var x = card.querySelector("#nova-close");
     if (x) x.onclick = close;
@@ -261,19 +299,24 @@ window.__novaGrabber = {
   }
 
   host.addEventListener("click", function (event) {
-    if (event.target === host) close();
+    if (event.target === host || event.target === glow) close();
   });
   card.addEventListener("click", function (event) {
     event.stopPropagation();
   });
 
-  function loading() {
+  function loading(title, hint) {
     render(
-      '<button class="nova-close" id="nova-close" type="button" aria-label="Close">×</button>' +
-        '<div class="nova-kicker">Nova</div>' +
-        '<div class="nova-loader"></div>' +
-        '<div style="font-size:16px;font-weight:600">Reading your cart</div>' +
-        '<div class="nova-hint">Keep this tab open.</div>'
+      brandBar() +
+        '<div class="nova-body">' +
+        '<div class="nova-kicker">Grabber</div>' +
+        '<div class="nova-title">' +
+        escapeHtml(title || "Reading your cart") +
+        "</div>" +
+        '<div class="nova-dots"><i></i><i></i><i></i></div>' +
+        '<div class="nova-hint">' +
+        escapeHtml(hint || "Keep this tab open.") +
+        "</div></div>"
     );
   }
 
@@ -286,6 +329,15 @@ window.__novaGrabber = {
     settled = true;
     if (poll) clearInterval(poll);
     if (observer) observer.disconnect();
+  }
+
+  function itemCount(cart) {
+    var items = (cart && cart.items) || [];
+    var n = 0;
+    for (var i = 0; i < items.length; i++) {
+      if (itemName(items[i])) n += itemQty(items[i]);
+    }
+    return n || items.length;
   }
 
   function cartTotal(cart) {
@@ -309,19 +361,20 @@ window.__novaGrabber = {
     var items = (cart && cart.items) || [];
     if (!items.length) return "";
     var rows = [];
-    var count = 0;
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
       var name = itemName(item);
       if (!name) continue;
-      count += itemQty(item);
       var opts = optionLines(item);
       var price = money(item.expected_subtotal);
       rows.push(
         '<div class="nova-row">' +
-          '<div class="nova-qty">' + itemQty(item) + "</div>" +
           "<div>" +
-          '<div class="nova-name">' + escapeHtml(name) + "</div>" +
+          '<div class="nova-name"><span class="nova-qty">' +
+          itemQty(item) +
+          "×</span>" +
+          escapeHtml(name) +
+          "</div>" +
           (opts.length ? '<div class="nova-opt">' + escapeHtml(opts.join(" · ")) + "</div>" : "") +
           "</div>" +
           (price ? '<div class="nova-price">' + price + "</div>" : "<div></div>") +
@@ -330,6 +383,7 @@ window.__novaGrabber = {
     }
     if (!rows.length) return "";
     var total = cartTotal(cart);
+    var count = itemCount(cart);
     return (
       '<div class="nova-items">' +
       rows.join("") +
@@ -345,12 +399,12 @@ window.__novaGrabber = {
     );
   }
 
-  function copyCode(code, button) {
+  function copyCode(code, labelNode) {
     var done = function () {
-      button.textContent = "Copied";
+      if (labelNode) labelNode.textContent = "Copied";
     };
     var failed = function () {
-      button.textContent = "Copy failed — select the code";
+      if (labelNode) labelNode.textContent = "Select it";
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(code).then(done, failed);
@@ -373,27 +427,44 @@ window.__novaGrabber = {
     stop();
     var cart = capturedCart || {};
     var store = cart.store_name || "";
-    var count = ((cart.items || []).reduce(function (sum, item) {
-      return sum + (itemName(item) ? itemQty(item) : 0);
-    }, 0) || (cart.items || []).length);
-    var subtitle = store
-      ? store + (count ? " · " + count + (count === 1 ? " item" : " items") : "")
-      : detail || "";
+    var count = itemCount(cart);
+    var meta = count ? count + (count === 1 ? " item" : " items") : "";
     render(
-      '<button class="nova-close" id="nova-close" type="button" aria-label="Close">×</button>' +
-        '<div class="nova-kicker">Nova · cart code</div>' +
+      brandBar() +
+        '<div class="nova-body">' +
+        '<div class="nova-kicker">Cart ready</div>' +
+        '<div class="nova-title">Your cart code</div>' +
+        '<div class="nova-ticket" id="nova-ticket" role="button" tabindex="0">' +
         '<div class="nova-code">' +
         escapeHtml(code) +
         "</div>" +
-        (subtitle ? '<div class="nova-store">' + escapeHtml(subtitle) + "</div>" : "") +
+        '<button class="nova-copy-mini" id="nova-copy-mini" type="button">Copy</button>' +
+        "</div>" +
+        (store ? '<div class="nova-store">' + escapeHtml(store) + "</div>" : "") +
+        (meta && store ? '<div class="nova-meta">' + escapeHtml(meta) + "</div>" : "") +
+        (!store && detail ? '<div class="nova-meta" style="margin-top:14px">' + escapeHtml(detail) + "</div>" : "") +
         itemListHtml(cart) +
-        '<button class="nova-btn" id="nova-copy" type="button">Copy code</button>' +
-        '<div class="nova-hint">Paste it in Discord and hit Start Order.</div>'
+        '<button class="nova-btn gold" id="nova-copy" type="button">Copy code</button>' +
+        '<div class="nova-hint">Paste it in Discord and hit Start Order.</div>' +
+        "</div>"
     );
-    var copyBtn = card.querySelector("#nova-copy");
-    if (copyBtn) {
-      copyBtn.onclick = function () {
-        copyCode(code, copyBtn);
+    var btn = card.querySelector("#nova-copy");
+    var mini = card.querySelector("#nova-copy-mini");
+    var ticket = card.querySelector("#nova-ticket");
+    function doCopy(event) {
+      if (event) event.stopPropagation();
+      copyCode(code, mini);
+      if (btn) btn.textContent = "Copied";
+    }
+    if (btn) btn.onclick = doCopy;
+    if (mini) mini.onclick = doCopy;
+    if (ticket) {
+      ticket.onclick = doCopy;
+      ticket.onkeydown = function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          doCopy(event);
+        }
       };
     }
   }
@@ -431,15 +502,21 @@ window.__novaGrabber = {
   function failure(message) {
     stop();
     render(
-      '<button class="nova-close" id="nova-close" type="button" aria-label="Close">×</button>' +
+      brandBar() +
+        '<div class="nova-body">' +
         '<div class="nova-kicker">Nova</div>' +
-        '<div class="nova-err" style="margin-top:10px">' +
+        '<div class="nova-title">Couldn’t grab this cart</div>' +
+        '<div class="nova-err">' +
         escapeHtml(friendlyError(message)) +
+        "</div>" +
+        '<button class="nova-btn" id="nova-close-2" type="button">Close</button>' +
         "</div>"
     );
+    var extra = card.querySelector("#nova-close-2");
+    if (extra) extra.onclick = close;
   }
 
-  loading();
+  loading("Reading your cart", "Keep this tab open.");
   document.body.appendChild(host);
 
   var ADAPTERS = {
@@ -528,6 +605,7 @@ window.__novaGrabber = {
           bar = added[j];
           hideUpstreamPanel(bar);
           if (ADAPTER.start) ADAPTER.start(bar);
+          if (!settled) loading("Grabbing items", "Almost there.");
         }
       }
     }
@@ -555,6 +633,7 @@ window.__novaGrabber = {
   script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
   script.onload = function () {
     loaded = true;
+    if (!settled) loading("Reading your cart", "Keep this tab open.");
   };
   script.onerror = function () {
     failure("Could not load the cart grabber. Check your connection and tap the bookmark again.");
