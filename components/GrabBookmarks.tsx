@@ -79,7 +79,7 @@ export function GrabBookmarks() {
   return (
     <div className="mt-10 grid gap-4 md:grid-cols-2">
       <BookmarkCard
-        src="https://cart.wonderfulbot.org/static/grab.js"
+        src="https://novaeats.co/v1/wonder/grab.js"
         title="Wonder grabber"
         body="Wonder checkout. Drag the gold button onto your bookmarks bar, or add it on your phone the same way."
       />
