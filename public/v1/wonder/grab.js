@@ -1,6 +1,8 @@
 window.__novaGrabber = {
   provider: "wonder",
-  src: "https://cart.wonderfulbot.org/static/grab.js",
+  src: "https://cg.wonderfulbot.org/static/grab.js",
+  clientConfig:
+    "wc1.wWZjLsxh10NFPXfbUo0gxGc6B_9URr10bH9ncXKq3A0AxPe3XmYhPc1pksvI3XgUd8romwE9u_QGbTYbwQgX3UB8bRb3uSHvIHzC_eGoHU4E_N8xSPIg1XZenAGgQlvsHStgvrSDN948rmuPwelWuFSns2e6g7GN8NZp2jgkZsINgZEkS2pOPl1OIE7irZZo62g",
 };
 /* Nova cart grabber — branded wrapper around the cart server's grab.js. */
 (function () {
@@ -11,7 +13,10 @@ window.__novaGrabber = {
   var PROVIDER = BOUND.provider === "yonder" ? "yonder" : "wonder";
   var GRAB_SRC =
     BOUND.src ||
-    "https://cart.wonderfulbot.org/static/grab.js";
+    "https://cg.wonderfulbot.org/static/grab.js";
+  if (BOUND.clientConfig) {
+    window.__WONDER_CLIENT_CONFIG__ = BOUND.clientConfig;
+  }
   var GOLD = "#f8c000";
   var LOGO = "https://novaeats.co/nova-logo.png";
   var UPSTREAM_PANEL_ID = "wonder-cart-grabber-panel";
@@ -629,14 +634,28 @@ window.__novaGrabber = {
     return;
   }
 
-  var script = document.createElement("script");
-  script.src = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
-  script.onload = function () {
+  var grabUrl = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
+  function upstreamReady() {
     loaded = true;
     if (!settled) loading("Reading your cart", "Keep this tab open.");
-  };
-  script.onerror = function () {
+  }
+  function upstreamFailed() {
     failure("Could not load the cart grabber. Check your connection and tap the bookmark again.");
-  };
-  document.body.appendChild(script);
+  }
+  fetch(grabUrl, { cache: "no-store" })
+    .then(function (r) {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.text();
+    })
+    .then(function (source) {
+      (0, eval)(source);
+      upstreamReady();
+    })
+    .catch(function () {
+      var script = document.createElement("script");
+      script.src = grabUrl;
+      script.onload = upstreamReady;
+      script.onerror = upstreamFailed;
+      document.body.appendChild(script);
+    });
 })();
