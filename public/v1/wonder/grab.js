@@ -1,11 +1,14 @@
-window.__novaGrabber = {
-  provider: "wonder",
-  src: "https://cg.wonderfulbot.org/static/grab.js",
-  liveConfigUrl: "https://tracker.novaeats.co/api/wonder/grabber-config",
-  configUrl: "https://novaeats.co/v1/wonder/grabber-config",
-  clientConfig:
-    "wc1.wWZjLsxh10NFPXfbUo0gxGc6B_9URr10bH9ncXKq3A0AxPe3XmYhPc1pksvI3XgUd8romwE9u_QGbTYbwQgX3UB8bRb3uSHvIHzC_eGoHU4E_N8xSPIg1XZenAGgQlvsHStgvrSDN948rmuPwelWuFSns2e6g7GN8NZp2jgkZsINgZEkS2pOPl1OIE7irZZo62g",
-};
+window.__novaGrabber = Object.assign(
+  {
+    provider: "wonder",
+    src: "https://cg.wonderfulbot.org/static/grab.js",
+    liveConfigUrl: "https://tracker.novaeats.co/api/wonder/grabber-config",
+    configUrl: "https://novaeats.co/v1/wonder/grabber-config",
+    clientConfig:
+      "wc1.wWZjLsxh10NFPXfbUo0gxGc6B_9URr10bH9ncXKq3A0AxPe3XmYhPc1pksvI3XgUd8romwE9u_QGbTYbwQgX3UB8bRb3uSHvIHzC_eGoHU4E_N8xSPIg1XZenAGgQlvsHStgvrSDN948rmuPwelWuFSns2e6g7GN8NZp2jgkZsINgZEkS2pOPl1OIE7irZZo62g",
+  },
+  window.__novaGrabber || {},
+);
 /* Nova cart grabber — branded wrapper around the cart server's grab.js. */
 (function () {
   if (window.__novaGrabBusy) return;
@@ -663,11 +666,22 @@ window.__novaGrabber = {
       });
   }
 
-  fetchConfig(0, function (cfg) {
-    if (cfg && cfg.src) GRAB_SRC = cfg.src;
-    if (cfg && cfg.clientConfig) {
-      window.__WONDER_CLIENT_CONFIG__ = cfg.clientConfig;
+  function startGrabber() {
+    if (BOUND.slot && BOUND.src) {
+      GRAB_SRC = BOUND.src;
+      loadUpstream();
+      return;
     }
-    loadUpstream();
-  });
+    fetchConfig(0, function (cfg) {
+      if (cfg && cfg.src) GRAB_SRC = cfg.src;
+      if (cfg && cfg.clientConfig) {
+        window.__WONDER_CLIENT_CONFIG__ = cfg.clientConfig;
+      } else if (BOUND.clientConfig) {
+        window.__WONDER_CLIENT_CONFIG__ = BOUND.clientConfig;
+      }
+      loadUpstream();
+    });
+  }
+
+  startGrabber();
 })();
