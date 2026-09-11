@@ -2,27 +2,36 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function bookmarkFor(src: string) {
+const WONDERFUL_GRAB_SCRIPT =
+  process.env.NEXT_PUBLIC_WONDERFUL_GRAB_SCRIPT ||
+  "https://novaeats.co/v1/wonder/grab.js";
+
+const WONDERFUL_GRAB_CLIENT_CONFIG =
+  process.env.NEXT_PUBLIC_WONDERFUL_GRAB_CLIENT_CONFIG ||
+  "wc1.wWZjLsxh10NFPXfbUo0gxGc6B_9URr10bH9ncXKq3A0AxPe3XmYhPc1pksvI3XgUd8romwE9u_QGbTYbwQgX3UB8bRb3uSHvIHzC_eGoHU4E_N8xSPIg1XZenAGgQlvsHStgvrSDN948rmuPwelWuFSns2e6g7GN8NZp2jgkZsINgZEkS2pOPl1OIE7irZZo62g";
+
+function novaBookmark() {
   return (
-    "javascript:(function(){var s=document.createElement('script');s.src='" +
-    src +
+    'javascript:(function(){var c="' +
+    WONDERFUL_GRAB_CLIENT_CONFIG +
+    '";window.__WONDER_CLIENT_CONFIG__=c;var s=document.createElement(\'script\');s.src=\'' +
+    WONDERFUL_GRAB_SCRIPT +
     "?v='+Date.now();document.body.appendChild(s);})();"
   );
 }
 
 function BookmarkCard({
-  src,
+  bookmark,
   title,
   body,
 }: {
-  src: string;
+  bookmark: string;
   title: string;
   body: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [copied, setCopied] = useState(false);
   const [hint, setHint] = useState("");
-  const bookmark = bookmarkFor(src);
 
   useEffect(() => {
     const node = ref.current;
@@ -76,17 +85,14 @@ function BookmarkCard({
 }
 
 export function GrabBookmarks() {
+  const bookmark = novaBookmark();
+
   return (
-    <div className="mt-10 grid gap-4 md:grid-cols-2">
+    <div className="mt-10">
       <BookmarkCard
-        src="https://novaeats.co/v1/wonder/grab.js"
+        bookmark={bookmark}
         title="Wonder grabber"
-        body="Wonder checkout. Drag the gold button onto your bookmarks bar, or add it on your phone the same way."
-      />
-      <BookmarkCard
-        src="https://novaeats.co/v2/wonder/grab.js"
-        title="Grabber 2"
-        body="Same cart page, other checkout backend. Drag the gold button onto your bookmarks bar."
+        body="Wonder checkout. Drag the gold button onto your bookmarks bar, or add it on your phone the same way. Backend (Wonderful vs Yonder) is configured on the server — customers always use this same bookmark."
       />
     </div>
   );

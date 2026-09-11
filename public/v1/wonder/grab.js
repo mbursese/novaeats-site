@@ -1,6 +1,8 @@
 window.__novaGrabber = {
   provider: "wonder",
   src: "https://cg.wonderfulbot.org/static/grab.js",
+  liveConfigUrl: "https://tracker.novaeats.co/api/wonder/grabber-config",
+  configUrl: "https://novaeats.co/v1/wonder/grabber-config",
   clientConfig:
     "wc1.wWZjLsxh10NFPXfbUo0gxGc6B_9URr10bH9ncXKq3A0AxPe3XmYhPc1pksvI3XgUd8romwE9u_QGbTYbwQgX3UB8bRb3uSHvIHzC_eGoHU4E_N8xSPIg1XZenAGgQlvsHStgvrSDN948rmuPwelWuFSns2e6g7GN8NZp2jgkZsINgZEkS2pOPl1OIE7irZZo62g",
 };
@@ -10,7 +12,6 @@ window.__novaGrabber = {
   window.__novaGrabBusy = true;
 
   var BOUND = window.__novaGrabber || {};
-  var PROVIDER = BOUND.provider === "yonder" ? "yonder" : "wonder";
   var GRAB_SRC =
     BOUND.src ||
     "https://cg.wonderfulbot.org/static/grab.js";
@@ -202,11 +203,10 @@ window.__novaGrabber = {
     quarantineStyle = document.createElement("style");
     quarantineStyle.id = UPSTREAM_STYLE_ID;
     quarantineStyle.textContent =
-      "#" + UPSTREAM_PANEL_ID + ",#wa-grab{display:none!important;visibility:hidden!important;pointer-events:none!important;}";
+      "#" + UPSTREAM_PANEL_ID + "{display:none!important;visibility:hidden!important;pointer-events:none!important;}";
     document.head.appendChild(quarantineStyle);
   }
   hideUpstreamPanel(document.getElementById(UPSTREAM_PANEL_ID));
-  hideUpstreamPanel(document.getElementById("wa-grab"));
   hookNetwork();
 
   var host = document.createElement("div");
@@ -557,31 +557,8 @@ window.__novaGrabber = {
         return null;
       },
     },
-    yonder: {
-      host: "www.wonder.com",
-      owns: function (node) {
-        return node.id === "wa-grab";
-      },
-      read: function (node) {
-        var codeNode = node.querySelector(".wa-code");
-        if (codeNode) {
-          var detailNode = codeNode.nextElementSibling;
-          if (detailNode && (detailNode.id === "wa-hint" || /tap the code/i.test(detailNode.textContent || ""))) {
-            detailNode = detailNode.nextElementSibling;
-          }
-          return {
-            code: (codeNode.textContent || "").trim(),
-            detail: detailNode ? (detailNode.textContent || "").trim() : "",
-          };
-        }
-        if ((node.style.borderColor || "").replace(/\s/g, "").indexOf("237,66,69") >= 0) {
-          return { error: node.textContent || "" };
-        }
-        return null;
-      },
-    },
   };
-  var ADAPTER = ADAPTERS[PROVIDER];
+  var ADAPTER = ADAPTERS.wonder;
 
   var bar = null;
   var seen = "";
@@ -634,7 +611,6 @@ window.__novaGrabber = {
     return;
   }
 
-  var grabUrl = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
   function upstreamReady() {
     loaded = true;
     if (!settled) loading("Reading your cart", "Keep this tab open.");
@@ -642,20 +618,56 @@ window.__novaGrabber = {
   function upstreamFailed() {
     failure("Could not load the cart grabber. Check your connection and tap the bookmark again.");
   }
-  fetch(grabUrl, { cache: "no-store" })
-    .then(function (r) {
-      if (!r.ok) throw new Error(String(r.status));
-      return r.text();
-    })
-    .then(function (source) {
-      (0, eval)(source);
-      upstreamReady();
-    })
-    .catch(function () {
-      var script = document.createElement("script");
-      script.src = grabUrl;
-      script.onload = upstreamReady;
-      script.onerror = upstreamFailed;
-      document.body.appendChild(script);
-    });
+  function loadUpstream() {
+    var grabUrl = GRAB_SRC + (GRAB_SRC.indexOf("?") < 0 ? "?v=" : "&v=") + Date.now();
+    fetch(grabUrl, { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error(String(r.status));
+        return r.text();
+      })
+      .then(function (source) {
+        (0, eval)(source);
+        upstreamReady();
+      })
+      .catch(function () {
+        var script = document.createElement("script");
+        script.src = grabUrl;
+        script.onload = upstreamReady;
+        script.onerror = upstreamFailed;
+        document.body.appendChild(script);
+      });
+  }
+
+  var configUrls = [];
+  if (BOUND.liveConfigUrl) configUrls.push(BOUND.liveConfigUrl);
+  if (BOUND.configUrl) configUrls.push(BOUND.configUrl);
+  if (!configUrls.length) {
+    configUrls.push("https://novaeats.co/v1/wonder/grabber-config");
+  }
+
+  function fetchConfig(index, done) {
+    if (index >= configUrls.length) {
+      done(null);
+      return;
+    }
+    fetch(configUrls[index] + "?v=" + Date.now(), { cache: "no-store" })
+      .then(function (r) {
+        return r.ok ? r.json() : null;
+      })
+      .catch(function () {
+        return null;
+      })
+      .then(function (cfg) {
+        if (cfg && cfg.src) done(cfg);
+        else fetchConfig(index + 1, done);
+      });
+  }
+
+  fetchConfig(0, function (cfg) {
+    if (cfg && cfg.src) GRAB_SRC = cfg.src;
+    if (cfg && cfg.clientConfig) {
+      window.__WONDER_CLIENT_CONFIG__ = cfg.clientConfig;
+    }
+    loadUpstream();
+  });
 })();

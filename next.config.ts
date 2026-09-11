@@ -16,7 +16,6 @@ const nextConfig: NextConfig = {
     return [
       { source: "/grab/:path*", headers: grabHeaders },
       { source: "/v1/:path*", headers: grabHeaders },
-      { source: "/v2/:path*", headers: grabHeaders },
     ];
   },
   async rewrites() {
