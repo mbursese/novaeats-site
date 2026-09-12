@@ -23,15 +23,40 @@ window.__novaGrabber = Object.assign(
   }
   var GOLD = "#f8c000";
   var LOGO = "https://novaeats.co/nova-logo.png";
-  var UPSTREAM_PANEL_ID = "wonder-cart-grabber-panel";
+  var UPSTREAM_PANEL_IDS = ["wonder-cart-grabber-panel", "wa-grab"];
   var UPSTREAM_STYLE_ID = "nova-grabber-upstream-quarantine";
   var capturedCart = null;
 
   function hideUpstreamPanel(node) {
     if (!node) return;
-    node.style.display = "none";
-    node.style.visibility = "hidden";
-    node.style.pointerEvents = "none";
+    node.style.setProperty("display", "none", "important");
+    node.style.setProperty("visibility", "hidden", "important");
+    node.style.setProperty("pointer-events", "none", "important");
+    node.style.setProperty("opacity", "0", "important");
+  }
+
+  function hideAllUpstreamPanels() {
+    for (var i = 0; i < UPSTREAM_PANEL_IDS.length; i++) {
+      hideUpstreamPanel(document.getElementById(UPSTREAM_PANEL_IDS[i]));
+    }
+  }
+
+  function installUpstreamQuarantine() {
+    var css = UPSTREAM_PANEL_IDS.map(function (id) {
+      return (
+        "#" +
+        id +
+        "{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important;}"
+      );
+    }).join("");
+    var quarantineStyle = document.getElementById(UPSTREAM_STYLE_ID);
+    if (!quarantineStyle) {
+      quarantineStyle = document.createElement("style");
+      quarantineStyle.id = UPSTREAM_STYLE_ID;
+      document.head.appendChild(quarantineStyle);
+    }
+    quarantineStyle.textContent = css;
+    hideAllUpstreamPanels();
   }
 
   function escapeHtml(value) {
@@ -201,15 +226,7 @@ window.__novaGrabber = Object.assign(
     };
   }
 
-  var quarantineStyle = document.getElementById(UPSTREAM_STYLE_ID);
-  if (!quarantineStyle) {
-    quarantineStyle = document.createElement("style");
-    quarantineStyle.id = UPSTREAM_STYLE_ID;
-    quarantineStyle.textContent =
-      "#" + UPSTREAM_PANEL_ID + "{display:none!important;visibility:hidden!important;pointer-events:none!important;}";
-    document.head.appendChild(quarantineStyle);
-  }
-  hideUpstreamPanel(document.getElementById(UPSTREAM_PANEL_ID));
+  installUpstreamQuarantine();
   hookNetwork();
 
   var host = document.createElement("div");
@@ -531,7 +548,7 @@ window.__novaGrabber = Object.assign(
     wonder: {
       host: "www.wonder.com",
       owns: function (node) {
-        return node.id === UPSTREAM_PANEL_ID;
+        return node.id === "wonder-cart-grabber-panel";
       },
       start: function (node) {
         if (node.getAttribute("data-nova-autostart") === "1") return;
@@ -560,8 +577,61 @@ window.__novaGrabber = Object.assign(
         return null;
       },
     },
+    yonder: {
+      host: "www.wonder.com",
+      owns: function (node) {
+        return node.id === "wa-grab";
+      },
+      start: function () {
+        /* Yonder auto-runs as soon as its script loads. */
+      },
+      read: function (node) {
+        var codeEl = node.querySelector("#wa-code");
+        if (codeEl) {
+          var code = (codeEl.textContent || "").trim().toUpperCase();
+          if (/^[A-Z0-9]{5,8}$/.test(code)) {
+            var detail = "";
+            var kids = node.children || [];
+            for (var i = kids.length - 1; i >= 0; i--) {
+              var text = (kids[i].textContent || "").replace(/\s+/g, " ").trim();
+              if (text && text.toUpperCase().indexOf(code) < 0) {
+                detail = text;
+                break;
+              }
+            }
+            return { code: code, detail: detail };
+          }
+        }
+        var text = (node.textContent || "").replace(/\s+/g, " ").trim();
+        var lower = text.toLowerCase();
+        if (
+          lower.indexOf("couldn't read") >= 0 ||
+          lower.indexOf("couldn't include") >= 0 ||
+          lower.indexOf("looks empty") >= 0
+        ) {
+          return { error: text };
+        }
+        return null;
+      },
+    },
   };
-  var ADAPTER = ADAPTERS.wonder;
+
+  function isYonderUpstream(src, slot, backend) {
+    if (String(slot) === "2") return true;
+    if (String(backend || "").toLowerCase().indexOf("yonder") === 0) return true;
+    var hay = String(src || "").toLowerCase();
+    return (
+      hay.indexOf("railway.app") >= 0 ||
+      hay.indexOf("wonder-cart-production") >= 0 ||
+      hay.indexOf("yonder") >= 0
+    );
+  }
+
+  function pickAdapter(src, slot, backend) {
+    return isYonderUpstream(src, slot, backend) ? ADAPTERS.yonder : ADAPTERS.wonder;
+  }
+
+  var ADAPTER = pickAdapter(GRAB_SRC, BOUND.slot, BOUND.backend);
 
   var bar = null;
   var seen = "";
@@ -573,6 +643,7 @@ window.__novaGrabber = Object.assign(
 
   function sync() {
     if (!bar || settled) return;
+    hideUpstreamPanel(bar);
     var text = bar.textContent || "";
     if (text === seen) return;
     seen = text;
@@ -666,20 +737,29 @@ window.__novaGrabber = Object.assign(
       });
   }
 
+  function applyGrabberConfig(cfg) {
+    if (cfg && cfg.src) GRAB_SRC = cfg.src;
+    if (cfg && cfg.clientConfig) {
+      window.__WONDER_CLIENT_CONFIG__ = cfg.clientConfig;
+    } else if (BOUND.clientConfig) {
+      window.__WONDER_CLIENT_CONFIG__ = BOUND.clientConfig;
+    }
+    ADAPTER = pickAdapter(
+      GRAB_SRC,
+      (cfg && cfg.slot) || BOUND.slot,
+      (cfg && cfg.backend) || BOUND.backend
+    );
+    installUpstreamQuarantine();
+    loadUpstream();
+  }
+
   function startGrabber() {
     if (BOUND.slot && BOUND.src) {
-      GRAB_SRC = BOUND.src;
-      loadUpstream();
+      applyGrabberConfig(BOUND);
       return;
     }
     fetchConfig(0, function (cfg) {
-      if (cfg && cfg.src) GRAB_SRC = cfg.src;
-      if (cfg && cfg.clientConfig) {
-        window.__WONDER_CLIENT_CONFIG__ = cfg.clientConfig;
-      } else if (BOUND.clientConfig) {
-        window.__WONDER_CLIENT_CONFIG__ = BOUND.clientConfig;
-      }
-      loadUpstream();
+      applyGrabberConfig(cfg || BOUND);
     });
   }
 
