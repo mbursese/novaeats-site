@@ -1,38 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Nova Eats — Eat well. Spend less.",
+  title: "Nova Eats — Save 50%+ on delivery",
   description:
-    "Get up to 50% off food delivery. Same restaurants, better prices.",
+    "Save 30–60% on food delivery by sharing your cart link to get discounted orders with live tracking and Discord support.",
   icons: {
     icon: "/nova-logo.png",
     apple: "/nova-logo.png",
+  },
+  openGraph: {
+    title: "Nova Eats — Save 50%+ on delivery",
+    description:
+      "Save 30–60% on food delivery by sharing your cart link to get discounted orders with live tracking and Discord support.",
+    images: ["/nova-logo.png"],
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full bg-bg text-ink">
-        <div className="page-glow" aria-hidden />
-        <div className="grain" aria-hidden />
-        <div className="relative z-10">{children}</div>
-      </body>
+    <html lang="en" className="h-full antialiased">
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }

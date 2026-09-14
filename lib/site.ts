@@ -1,7 +1,7 @@
-export const DISCORD = "https://discord.gg/NOVA";
+export const DISCORD = "https://discord.gg/novaeats";
 
 export const nav = [
-  { href: "#how", label: "How It Works" },
-  { href: "#why", label: "Savings" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#how", label: "How it works" },
+  { href: "#savings", label: "Savings" },
+  { href: "#features", label: "Features" },
 ];
